@@ -1,0 +1,222 @@
+definitions:
+  ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  GetConfirmedTranslationResponse:
+    properties:
+      translation:
+        $ref: '#/definitions/Translation'
+        type: object
+    type: object
+  GetTranslationsResponse:
+    properties:
+      translations:
+        items:
+          $ref: '#/definitions/Translation'
+        type: array
+    type: object
+  SubmitTranslationRequest:
+    properties:
+      description:
+        maxLength: 100
+        type: string
+      language:
+        example: en
+        type: string
+      name:
+        maxLength: 20
+        type: string
+      signature:
+        type: string
+      timestamp:
+        example: "2020-01-01T00:00:00Z"
+        type: string
+      word:
+        maximum: 3299
+        type: integer
+    type: object
+  SubmitTranslationResponse:
+    properties:
+      error:
+        type: string
+      resCode:
+        enum:
+        - 0
+        - 1
+        - 2
+        - 4
+        type: integer
+      translationId:
+        type: string
+    type: object
+  Translation:
+    properties:
+      confirmed:
+        type: boolean
+      description:
+        type: string
+      downVotes:
+        type: integer
+      id:
+        type: string
+      name:
+        type: string
+      upVotes:
+        type: integer
+    type: object
+  VoteRequest:
+    properties:
+      signature:
+        type: string
+      timestamp:
+        example: "2020-01-01T00:00:00Z"
+        type: string
+      translationId:
+        type: string
+      up:
+        type: boolean
+    type: object
+  VoteResponse:
+    properties:
+      downVotes:
+        type: integer
+      error:
+        type: string
+      resCode:
+        enum:
+        - 0
+        - 3
+        - 4
+        - 5
+        type: integer
+      upVotes:
+        type: integer
+    type: object
+info:
+  contact: {}
+  license:
+    name: Apache 2.0
+paths:
+  /translation:
+    post:
+      operationId: submitTranslation
+      parameters:
+      - description: translation details
+        in: body
+        name: translation
+        required: true
+        schema:
+          $ref: '#/definitions/SubmitTranslationRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/SubmitTranslationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Create or update translation
+      tags:
+      - Translation
+  /vote:
+    post:
+      operationId: vote
+      parameters:
+      - description: vote details
+        in: body
+        name: vote
+        required: true
+        schema:
+          $ref: '#/definitions/VoteRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/VoteResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Vote for or against translation
+      tags:
+      - Translation
+  /word/{word}/language/{language}/confirmed-translation:
+    get:
+      operationId: getConfirmedTranslation
+      parameters:
+      - description: word id
+        in: path
+        name: word
+        required: true
+        type: integer
+      - description: language
+        in: path
+        name: language
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/GetConfirmedTranslationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Get confirmed translation
+      tags:
+      - Translation
+  /word/{word}/language/{language}/translations:
+    get:
+      operationId: getTranslations
+      parameters:
+      - description: word id
+        in: path
+        name: word
+        required: true
+        type: integer
+      - description: language
+        in: path
+        name: language
+        required: true
+        type: string
+      - description: continuation token to get next translations
+        in: header
+        name: continuation-token
+        type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            continuation-token:
+              description: continuation token
+              type: string
+          schema:
+            $ref: '#/definitions/GetTranslationsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Get translations sorted by rating
+      tags:
+      - Translation
+swagger: "2.0"
