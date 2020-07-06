@@ -14,23 +14,23 @@ const (
 var (
 	NotIdentityError = &TranslationError{
 		code:  notIdentityResCode,
-		error: "sender is not validated",
+		error: "Sender is not validated",
 	}
 	ConfirmedTranslationExistsError = &TranslationError{
 		code:  confirmedTranslationExistsResCode,
-		error: "confirmed translation exists",
+		error: "Confirmed translation exists",
 	}
 	SelfVotingError = &TranslationError{
 		code:  selfVotingResCode,
-		error: "voting for own translation is not allowed",
+		error: "Voting for own translation is not allowed",
 	}
 	OutdatedSubmissionError = &TranslationError{
 		code:  outdatedSubmissionResCode,
-		error: "outdated submission",
+		error: "Outdated submission",
 	}
 	DuplicatedVoteError = &TranslationError{
 		code:  duplicatedVoteResCode,
-		error: "duplicated vote",
+		error: "Duplicated vote",
 	}
 )
 
