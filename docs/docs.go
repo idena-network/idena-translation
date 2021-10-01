@@ -244,7 +244,7 @@ var doc = `{
             "properties": {
                 "description": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 150
                 },
                 "language": {
                     "type": "string",
@@ -252,7 +252,7 @@ var doc = `{
                 },
                 "name": {
                     "type": "string",
-                    "maxLength": 20
+                    "maxLength": 30
                 },
                 "signature": {
                     "type": "string"
@@ -263,7 +263,7 @@ var doc = `{
                 },
                 "word": {
                     "type": "integer",
-                    "maximum": 3299
+                    "maximum": 3939
                 }
             }
         },

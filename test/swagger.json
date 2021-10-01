@@ -249,7 +249,7 @@
                 },
                 "word": {
                     "type": "integer",
-                    "maximum": 3299
+                    "maximum": 3939
                 }
             }
         },

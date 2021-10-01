@@ -20,13 +20,13 @@ definitions:
   SubmitTranslationRequest:
     properties:
       description:
-        maxLength: 100
+        maxLength: 150
         type: string
       language:
         example: en
         type: string
       name:
-        maxLength: 20
+        maxLength: 30
         type: string
       signature:
         type: string
@@ -34,7 +34,7 @@ definitions:
         example: "2020-01-01T00:00:00Z"
         type: string
       word:
-        maximum: 3299
+        maximum: 3939
         type: integer
     type: object
   SubmitTranslationResponse:

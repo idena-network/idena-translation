@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/idena-network/idena-translation/config"
 	"github.com/idena-network/idena-translation/core"
+	"github.com/idena-network/idena-translation/core/words_mapper"
 	"github.com/idena-network/idena-translation/db"
 	"github.com/idena-network/idena-translation/db/postgres"
 	"github.com/idena-network/idena-translation/server"
@@ -499,7 +500,7 @@ func startTestServer() (*server.Server, db.Accessor, *client.IdenaFlipWordsTrans
 		IdentitiesByAddr:             make(map[string]bool),
 		AddressesByValueAndSignature: make(map[string]string),
 	}
-	auth := core.NewEngine(dbAccessor, nodeClient, 5, 3)
+	auth := core.NewEngine(dbAccessor, nodeClient, 5, 3, words_mapper.NewWordsMapper(""))
 	s := server.NewServer(port, auth)
 	go s.Start(config.SwaggerConfig{})
 	clConfig := client.DefaultTransportConfig().WithHost(fmt.Sprintf("localhost:%v", port))

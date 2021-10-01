@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/idena-network/idena-translation/config"
 	"github.com/idena-network/idena-translation/core"
+	"github.com/idena-network/idena-translation/core/words_mapper"
 	"github.com/idena-network/idena-translation/db"
 	"github.com/idena-network/idena-translation/db/postgres"
 	"github.com/idena-network/idena-translation/node"
@@ -30,7 +31,13 @@ func startServer(appConfig *config.Config) {
 }
 
 func initAuth(appConfig *config.Config) core.Engine {
-	return core.NewEngine(initDbAccessor(appConfig), initNodeClient(appConfig), appConfig.ItemsLimit, appConfig.ConfirmedRate)
+	return core.NewEngine(
+		initDbAccessor(appConfig),
+		initNodeClient(appConfig),
+		appConfig.ItemsLimit,
+		appConfig.ConfirmedRate,
+		words_mapper.NewWordsMapper(appConfig.WordsUrl),
+	)
 }
 
 func initDbAccessor(appConfig *config.Config) db.Accessor {

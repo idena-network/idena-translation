@@ -16,6 +16,7 @@ type Config struct {
 	Swagger       SwaggerConfig
 	ItemsLimit    uint8
 	ConfirmedRate uint8
+	WordsUrl      string
 }
 
 type PostgresConfig struct {

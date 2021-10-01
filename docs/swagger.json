@@ -224,7 +224,7 @@
             "properties": {
                 "description": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 150
                 },
                 "language": {
                     "type": "string",
@@ -232,7 +232,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "maxLength": 20
+                    "maxLength": 30
                 },
                 "signature": {
                     "type": "string"
@@ -243,7 +243,7 @@
                 },
                 "word": {
                     "type": "integer",
-                    "maximum": 3299
+                    "maximum": 3939
                 }
             }
         },

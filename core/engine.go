@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"github.com/idena-network/idena-translation/core/words_mapper"
 	"github.com/idena-network/idena-translation/db"
 	"github.com/idena-network/idena-translation/node"
 	"github.com/idena-network/idena-translation/types"
@@ -16,12 +17,13 @@ type Engine interface {
 	GetConfirmedTranslation(wordId uint32, language string) (types.GetConfirmedTranslationResponse, error)
 }
 
-func NewEngine(dbAccessor db.Accessor, nodeClient node.Client, itemsLimit, confirmedRate uint8) Engine {
+func NewEngine(dbAccessor db.Accessor, nodeClient node.Client, itemsLimit, confirmedRate uint8, wordsMapper words_mapper.WordsMapper) Engine {
 	return &engineImpl{
 		dbAccessor:    dbAccessor,
 		nodeClient:    nodeClient,
 		itemsLimit:    itemsLimit,
 		confirmedRate: confirmedRate,
+		wordsMapper:   wordsMapper,
 	}
 }
 
@@ -30,6 +32,7 @@ type engineImpl struct {
 	dbAccessor    db.Accessor
 	itemsLimit    uint8
 	confirmedRate uint8
+	wordsMapper   words_mapper.WordsMapper
 }
 
 func (engine *engineImpl) SubmitTranslation(request types.SubmitTranslationRequest) (types.SubmitTranslationResponse, error) {
@@ -57,7 +60,7 @@ func (engine *engineImpl) SubmitTranslation(request types.SubmitTranslationReque
 	_ = timestamp.UnmarshalText([]byte(request.Timestamp))
 	if translationId, err = engine.dbAccessor.SubmitTranslation(
 		address,
-		request.Word,
+		engine.wordsMapper.GetInitialWordId(request.Word),
 		request.Language,
 		request.Name,
 		request.Description,
@@ -83,7 +86,13 @@ func getTranslationSignedValue(request types.SubmitTranslationRequest) string {
 }
 
 func (engine *engineImpl) GetTranslations(wordId uint32, language string, continuationToken string) (types.GetTranslationsResponse, string, error) {
-	translations, nextContinuationToken, err := engine.dbAccessor.GetTranslations(wordId, language, continuationToken, engine.itemsLimit, engine.confirmedRate)
+	translations, nextContinuationToken, err := engine.dbAccessor.GetTranslations(
+		engine.wordsMapper.GetInitialWordId(wordId),
+		language,
+		continuationToken,
+		engine.itemsLimit,
+		engine.confirmedRate,
+	)
 	if err != nil {
 		return types.GetTranslationsResponse{}, "", err
 	}
@@ -141,7 +150,11 @@ func getVoteSignedValue(request types.VoteRequest) string {
 }
 
 func (engine *engineImpl) GetConfirmedTranslation(wordId uint32, language string) (types.GetConfirmedTranslationResponse, error) {
-	translation, err := engine.dbAccessor.GetConfirmedTranslation(wordId, language, engine.confirmedRate)
+	translation, err := engine.dbAccessor.GetConfirmedTranslation(
+		engine.wordsMapper.GetInitialWordId(wordId),
+		language,
+		engine.confirmedRate,
+	)
 	if err != nil {
 		return types.GetConfirmedTranslationResponse{}, err
 	}
