@@ -9,11 +9,11 @@ func (r SubmitTranslationRequest) Validate() error {
 	if r.Word > 3939 {
 		return errors.New("Invalid value 'word'")
 	}
-	if len(r.Name) == 0 || len(r.Name) > 30 {
+	if name := []rune(r.Name); len(name) == 0 || len(name) > 30 {
 		return errors.New("Translation exceeds the maximum length")
 	}
-	if len(r.Description) > 150 {
-		return errors.New("Translation descritption exceeds the maximum length")
+	if description := []rune(r.Description); len(description) > 150 {
+		return errors.New("Translation description exceeds the maximum length")
 	}
 	var timestamp time.Time
 	if err := timestamp.UnmarshalText([]byte(r.Timestamp)); err != nil {
