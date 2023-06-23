@@ -35,7 +35,7 @@ type SubmitTranslationRequest struct {
 	Timestamp string `json:"timestamp,omitempty"`
 
 	// word
-	// Maximum: 3939
+	// Maximum: 4615
 	Word int64 `json:"word,omitempty"`
 }
 
@@ -93,7 +93,7 @@ func (m *SubmitTranslationRequest) validateWord(formats strfmt.Registry) error {
 		return nil
 	}
 
-	if err := validate.MaximumInt("word", "body", int64(m.Word), 3939, false); err != nil {
+	if err := validate.MaximumInt("word", "body", int64(m.Word), 4615, false); err != nil {
 		return err
 	}
 

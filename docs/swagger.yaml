@@ -34,7 +34,7 @@ definitions:
         example: "2020-01-01T00:00:00Z"
         type: string
       word:
-        maximum: 3939
+        maximum: 4615
         type: integer
     type: object
   SubmitTranslationResponse:

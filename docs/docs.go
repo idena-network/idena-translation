@@ -263,7 +263,7 @@ var doc = `{
                 },
                 "word": {
                     "type": "integer",
-                    "maximum": 3939
+                    "maximum": 4615
                 }
             }
         },

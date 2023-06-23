@@ -6,7 +6,7 @@ import (
 )
 
 func (r SubmitTranslationRequest) Validate() error {
-	if r.Word > 3939 {
+	if r.Word > 4615 {
 		return errors.New("Invalid value 'word'")
 	}
 	if name := []rune(r.Name); len(name) == 0 || len(name) > 30 {

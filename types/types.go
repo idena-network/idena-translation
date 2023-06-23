@@ -7,7 +7,7 @@ type ErrorResponse struct {
 } // @Name ErrorResponse
 
 type SubmitTranslationRequest struct {
-	Word        uint32 `json:"word",minimum:"0" maximum:"3939"`
+	Word        uint32 `json:"word",minimum:"0" maximum:"4615"`
 	Language    string `json:"language" example:"en"`
 	Name        string `json:"name",minLength:"1" maxLength:"30"`
 	Description string `json:"description",minLength:"0" maxLength:"150"`
